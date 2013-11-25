@@ -1,0 +1,15 @@
+Package: willRd
+Type: Package
+Title: What the package does (short line)
+Version: 1.0
+Date: 2013-11-22
+Author: Who wrote it
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Description: More about what it does (maybe more than one line)
+License: What license is it under?
+Collate:
+    'fiber.plot.R'
+Imports:
+    caper,
+    ape,
+    animation
