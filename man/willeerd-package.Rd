@@ -1,10 +1,10 @@
-\name{willRd-package}
-\alias{willRd-package}
-\alias{willRd}
+\name{willeerd-package}
+\alias{willeerd-package}
+\alias{willeerd}
 \docType{package}
 \title{
 Things that Will has written in R
-~~ willRd ~~
+~~ willeerd ~~
 }
 \description{
 I work on ecology/evolutionary biology, and the entries in this package likely reflect that.
@@ -13,7 +13,7 @@ I'm releasing this online in the spirit of being helpful to other people. Please
 }
 \details{
 \tabular{ll}{
-Package: \tab willRd\cr
+Package: \tab willeerd\cr
 Type: \tab Package\cr
 Version: \tab 0.1\cr
 Date: \tab 2013-11-22\cr

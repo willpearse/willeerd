@@ -21,7 +21,7 @@
 #' @import animation
 #' @export
 
-fiber.plot <- function(tree, gif, slices=NULL, colours=NULL, pca=NULL, clade.mat=NULL, delay=0.2){
+fiber.plot <- function(tree, gif, n.groups=10, n.pc=1:5, slices=NULL, colours=NULL, pca=NULL, clade.mat=NULL, delay=0.2){
   #Assertions and argument checking
   if(!inherits(tree, "phylo"))
     stop("'", deparse(substitute(tree)), "' must be of class 'phylo'")
@@ -33,8 +33,8 @@ fiber.plot <- function(tree, gif, slices=NULL, colours=NULL, pca=NULL, clade.mat
     stop("'", deparse(substitute(pca)), "' must be of class 'prcomp'")
   if(!is.character(gif))
     stop("'", deparse(substitute(gif)), "' needs to be a filename!")
-  if(!is.null(clade.mat) & !inherits(clade.mat, "clade.matrix"))
-    stop("'", deparse(substitute(clade.mat)), "' must be of class 'clade.matrix'")
+  #if(!is.null(clade.mat) & !inherits(clade.mat, "clade.matrix"))
+    #stop("'", deparse(substitute(clade.mat)), "' must be of class 'clade.matrix'")
   
   #Setup
   timing <- branching.times(tree)
@@ -43,14 +43,19 @@ fiber.plot <- function(tree, gif, slices=NULL, colours=NULL, pca=NULL, clade.mat
   if(is.null(colours))
     colours <- rainbow(length(slices))
     #colours <- rainbow(nrow(tree$edge))
-  if(is.null(pca))
-    pca <- prcomp(cophenetic(tree), scale=TRUE, center=TRUE)
+  #if(is.null(pca))
+    #pca <- prcomp(cophenetic(tree), scale=TRUE, center=TRUE)
   if(is.null(clade.mat))
-    clade.mat <- clade.matrix(tree)$clade.matrix else clade.mat <- clade.mat$clade.matrix
-  spp.val <- pca$x[,1]
+    clade.mat <- clade.matrix(tree)$clade.matrix
+  #spp.val <- pca$x[,1]
   dimension <- floor(sqrt(length(spp.val))) + 1
-  data <- data.frame(species=names(spp.val), x=rep(seq(dimension), dimension)[seq_along(spp.val)], y=rep(seq(dimension), each=dimension)[seq_along(spp.val)])
+  #data <- data.frame(species=names(spp.val), x=rep(seq(dimension), dimension)[seq_along(spp.val)], y=rep(seq(dimension), each=dimension)[seq_along(spp.val)])
   
+  #clust <- hclust(dist(pca$x[,n.pc]))
+  #groups <- cutree(clust, k=n.groups)
+  #spp.val <- spp.val[order(groups, pca$x[,1])]
+  #clade.mat <- clade.mat[,order(groups, pca$x[,1])]
+  spp.val <- seq(5020)
   #Loop over all slices and print
   saveGIF({
     curr.colours <- rep(1, length(tree$tip.label))
