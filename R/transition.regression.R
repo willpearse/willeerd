@@ -20,9 +20,6 @@
 #' @import phytools
 #' @import caper
 #' @export
-#Wrapper functions
-
-
 transition.calc <- function(tree, continuous, discrete, simmap.model="ER", simmap.nsim=1000, simmap.pi="estimated", anc.ML.maxit=100000){
   #Assertions and argument checking
   if(!inherits(tree, "phylo")) stop("Error: '", deparse(substitute(simmap)), "' must be of class 'phylo'")
