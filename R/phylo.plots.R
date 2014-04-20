@@ -2,11 +2,12 @@
 #' 
 #' @param tree ape::phylo object
 #' @param tip.groups list where each element are the tip *numbers* that should be in a cartoon polytomy (see auto.polies below)
-#' @param colours a list of length tip.groups with colours for each polytomy OR a single colour for all polytomies OR NULL (the default) to make all polytomies rainbow-coloured
+#' @param clade.col a vector of length tip.groups with colours for each polytomy OR a single colour for all polytomies OR NULL (the default) to make all polytomies rainbow-coloured
+#' @param br.clade.col the colours of the branches inside the cartoon. If NULL (the default, which you probably want), they don't show up in the plot.
 #' @param auto.polies generate tip.groups by making a cartoon polytomy for all terminal polytomies. Setting this to TRUE (default is FALSE) will over-ride any tip.groups information. Note the function's return values is you want to set up a weird interaction of polytomies
 #' @param ... additional arguments to pass to ape::plot.phylo
-#' @details Makes a simple 'cartoon' phylogeny where polytomies are joined together in a big triangle. Plots twice: once with your arguments to ape::plot.phylo (to get dimensions of the plot), and then a second time in cartoon form. Could cause problems if you're outputting to PDF, sorry!
-#' @return A list containing the tip.groups plotted, the colours they were plotted under, the edges that were obscured by the cartoon printing, and a list of the number of the node that each polytomy started under
+#' @details Makes a simple 'cartoon' phylogeny where polytomies are joined together in a big triangle. Could cause problems if you're outputting to PDF, sorry!
+#' @return A list containing the tip.groups plotted, the clade colours they were plotted under, the edges that were obscured by the cartoon printing, and a list of the number of the node that each polytomy started under
 #' @author Will Pearse
 #' @examples
 #' tree <- read.tree(text="(((((A,B,C,D,E),(F,G,H,I,J)),H),K),L);")
@@ -15,7 +16,7 @@
 #' @import ape
 #' @import caper
 #' @export
-cartoon.plot <- function(tree, tip.groups=vector("list", 0), colours=NULL, auto.polies=FALSE, ...){
+cartoon.plot <- function(tree, tip.groups=vector("list", 0), clade.col=NULL, br.clade.col=NULL, auto.polies=FALSE, ...){
     if(auto.polies == TRUE){
         node.table <- table(tree$edge[,1])
         polytomies <- as.numeric(names(node.table)[node.table>2])
@@ -29,22 +30,83 @@ cartoon.plot <- function(tree, tip.groups=vector("list", 0), colours=NULL, auto.
         lengths <- sapply(tip.groups, length)
         tip.groups <- tip.groups[lengths>0]
     }
-    if(is.null(colours))
-        colours <- rainbow(length(tip.groups))
-    if(length(colours) < length(tip.groups))
-        colours <- rep(colours[1], length(tip.groups))
-    plot(tree, ...)
+    if(is.null(clade.col))
+        clade.col <- rainbow(length(tip.groups))
+    if(length(clade.col) < length(tip.groups))
+        clade.col <- rep(clade.col[1], length(tip.groups))
     to.be.joined <- rep(FALSE, nrow(tree$edge))
-    nodes <- numeric(length(tip.groups))
+    nodes <- vector("list", length(tip.groups))
     clade.mat <- clade.matrix(tree)
     to.be.joined <- tree$edge[,2] %in% unlist(tip.groups)
     for(i in seq_along(tip.groups))
-        nodes[i] <- which(apply(clade.mat$clade.matrix, 1, function(x) all(x[tip.groups[[i]]]==1) & all(x[-tip.groups[[i]]]==0)))
-    plot(tree, edge.col=ifelse(to.be.joined, "white", "black"), ...)
+        nodes[[i]] <- which(apply(clade.mat$clade.matrix, 1, function(x) sum(x[tip.groups[[i]]]==1)>=2 & all(x[-tip.groups[[i]]]==0)))
+    to.be.joined <- to.be.joined | tree$edge[,1] %in% unlist(nodes)
+    if(is.null(br.clade.col))
+        plot(tree, edge.col=ifelse(to.be.joined, "white", "black"), ...) else plot(tree, plot=FALSE, ...)
     pp <- get("last_plot.phylo", envir = .PlotPhyloEnv)
-    for(i in seq_along(tip.groups))
-        polygon(pp$xx[c(nodes[i],tip.groups[[i]])], pp$yy[c(nodes[i],tip.groups[[i]])], col=colours[i], border=colours[i])
-    invisible(list(tip.groups, colours, to.be.joined, nodes))
+    browser()
+    for(i in seq_along(tip.groups)){
+        range <- tip.groups[[i]][c(1,length(tip.groups[[i]]))]
+        polygon(pp$xx[c(min(nodes[[i]]),range)], pp$yy[c(min(nodes[[i]]),range)], col=clade.col[i], border=clade.col[i])
+    }
+    if(!is.null(br.clade.col)){
+        par(new=TRUE)
+        plot(tree, edge.col=ifelse(to.be.joined, br.clade.col, "black"), ...)
+    }
+    invisible(list(tip.groups, clade.col, to.be.joined, nodes))
+}
+
+#' \code{ringlabels} Label particular tip(s) with text around the edge of a circular phylogeny
+#' 
+#' @param tip.groups list where each element are the tip *numbers* that should be labelled
+#' @param text list when each element is the text to be plotted
+#' @param radial.adj a multiplier for how far out each tip label should be
+#' @param ... additional arguments for plotrix::arctext
+#' @details Add text to the outside of a circular phylogeny. Useful if you've made a cartoon phylogeny and need to label clades.
+#' @return The centers of each piece of text (in radians)
+#' @author Will Pearse
+#' @examples
+#' tree <- read.tree(text="(((((A,B,C,D,E),(F,G,H,I,J)),H),K),L);")
+#' ringlabels(tip.groups=list(1:5, 6:10) text=list("this is yet", "another test"))
+#' tree <- read.tree(text="(((((A,B,C,D,E),(F,G,H,I,J)),H),K),L);")
+#' @import ape
+#' @import plotrix
+#' @export
+ringlabels <- function(tip.groups, text, radial.adj=1.05, ...){
+    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+    raw <- seq(0, 2 * pi * (1 - 1/lastPP$Ntip) - 2 * pi * 1/360, length.out=lastPP$Ntip)
+    edges <- lastPP$edge[,2]
+    edges <- order(edges[edges <= lastPP$Ntip])
+    radians <- numeric(length(tip.groups))
+    for(i in seq_along(tip.groups)){
+        radians[i] <- median(raw[edges %in% tip.groups[[i]]])
+        arctext(x=text[[i]], radius=max(lastPP$xx)*radial.adj, middle=radians[i], ...)
+    }
+    invisible(radians[i])
+}
+
+tipring <- function(tips, col, radial.adj=1, ...){
+    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+    if (missing(tips)) 
+        tips <- seq(lastPP$Ntip)
+    edges <- lastPP$edge[,2]
+    edges <- order(edges[edges <= lastPP$Ntip])
+    raw <- seq(0, 2 * pi * (1 - 1/lastPP$Ntip) - 2 * pi * 1/360, length.out=lastPP$Ntip)
+    XX <- cos(raw) * max(lastPP$xx) * radial.adj
+    YY <- sin(raw) * max(lastPP$xx) * radial.adj
+    prev <- length(XX)
+    coords <- matrix(NA, nrow=length(XX)+1, ncol=2)
+    for(i in seq_along(XX)){
+        x.adj <- (XX[i]-XX[prev])/2
+        y.adj <- (YY[i]-YY[prev])/2
+        coords[i,] <- c(XX[i]+x.adj, YY[i]+y.adj)
+        prev <- i
+    }
+    coords[i+1,] <- coords[1,]
+    for(i in seq_along(XX))
+        if(i %in% tips)
+            lines(c(coords[edges[i],1],coords[edges[i]+1,1]), c(coords[edges[i],2],coords[edges[i]+1,2]), col=col, ...)
+    invisible(coords)
 }
 
 #' \code{willeerd.tiplabels} Plot tip labels with radial spacing
