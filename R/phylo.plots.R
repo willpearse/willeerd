@@ -44,7 +44,6 @@ cartoon.plot <- function(tree, tip.groups=vector("list", 0), clade.col=NULL, br.
     if(is.null(br.clade.col))
         plot(tree, edge.col=ifelse(to.be.joined, "white", "black"), ...) else plot(tree, plot=FALSE, ...)
     pp <- get("last_plot.phylo", envir = .PlotPhyloEnv)
-    browser()
     for(i in seq_along(tip.groups)){
         range <- tip.groups[[i]][c(1,length(tip.groups[[i]]))]
         polygon(pp$xx[c(min(nodes[[i]]),range)], pp$yy[c(min(nodes[[i]]),range)], col=clade.col[i], border=clade.col[i])
@@ -705,4 +704,38 @@ willeerd.BOTHlabels <- function (text, sel, XX, YY, adj, frame, pch, thermo, pie
     if (!is.null(pch)) 
         points(XX + adj[1] - 0.5, YY + adj[2] - 0.5, pch = pch, 
             col = col, bg = bg, ...)
+}
+
+#' \code{factorise.tree} 'Factorise' a tree by removing out species, making it easier to plot/manipulate
+#' 
+#' @param tree ape::phylo phylogeny to be 'factorised'
+#' @param scale.factor multiplier for the number of species within a terminal polytomy. E.g., 0.1 means each terminal polytomy will be ~10% its current size
+#' @details Thins out additional species, making a phylogeny smaller by reducing the size of each terminal polytomy by scale.factor
+#' @return List where first element is the factorised phylogeny, the second the tips that were dropped from each node (on the original tree; I can't guarantee the returning tree's structure)
+#' @author Will Pearse
+#' @examples
+#' tree <- read.tree(text="((A,B,C,D,E),F);")
+#' t <- factorise.tree(tree, 0.5)
+#' plot(t$tree)
+#' @import ape
+#' @export
+factorise.tree <- function(tree, scale.factor=0.5){
+    #Get the terminal nodes
+    nodes <- table(tree$edge[tree$edge[,2]<=length(tree$tip.label),1])
+    nodes <- nodes[nodes > 2]
+
+    #Reduce the diversity of those nodes and collect tips to drop
+    nodes <- round(nodes * scale.factor)
+    to.drop <- vector("list", length(nodes))
+    names(to.drop) <- names(nodes)
+    for(i in seq_along(nodes)){
+        t <- tree$edge[tree$edge[,1]==names(nodes[i]),2]
+        #Not all "terminal" polytomies have only tips descending (outgroups!)
+        t <- t[t <= length(tree$tip.label)]
+        to.drop[[i]] <- t[-1:-nodes[i]]
+    }
+    
+    #Drop those tips and return
+    tree <- drop.tip(tree, to.drop)
+    return(list(tree=tree, dropped=to.drop)
 }
