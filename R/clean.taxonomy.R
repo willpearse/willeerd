@@ -89,16 +89,16 @@ make.clean.taxon.lookup <- function(species){
 #' @author Will Pearse
 #' @import ape
 #' @export
-congeneric.merge <- function(lookup, tree, cite=TRUE){
+congeneric.merge <- function(lookup, tree, split="_", cite=TRUE){
     if(cite)
         cat("\nCite phyloGenerator when using this: DOI-10.1111/2041-210X.12055")
     if(!is.data.frame(lookup))
-        lookup <- data.frame(clean=lookup)
+        lookup <- data.frame(clean=lookup, stringsAsFactors=FALSE)
     before <- sum(lookup$clean %in% tree$tip.label)
     for(i in seq(nrow(lookup))){
         prog.bar(i, nrow(lookup))
         if(!is.null(lookup$clean[i]) & !lookup$clean[i] %in% tree$tip.label){
-            genus <- strsplit(lookup$clean[i], " ", fixed=TRUE)[[1]][1]
+            genus <- strsplit(lookup$clean[i], split, fixed=TRUE)[[1]][1]
             matches <- unique(grep(genus, tree$tip.label, value=TRUE))
             if(length(matches) > 0){
                 tree <- drop.tip(tree, matches[-1])
