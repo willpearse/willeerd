@@ -162,7 +162,7 @@ edge2phylo <- function(edge, species, extinct=numeric(0), edge.length=NA, traits
         to.change[edge >= spp.no[i]] <- to.change[edge >= spp.no[i]] + 1
     edge <- edge - to.change + length(spp.no)
     edge[spp.edges,2] <- seq_along(spp.no)
-    tree <- list(edge=edge, tip.label=paste("r", order(spp.no), sep="_"), edge.length=edge.length, Nnode=length(spp.no)-1, traits=traits)
+    tree <- list(edge=edge, tip.label=paste("r", order(spp.no), sep="_"), edge.length=edge.length, Nnode=length(unique(edge[,1])), traits=traits)
     class(tree) <- "phylo"
     return(tree)
 }

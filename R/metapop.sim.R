@@ -40,8 +40,9 @@ sim.meta.comm <- function(size=10, n.spp=8, timesteps=10, p.migrate=0.05, env.la
                     index[1] <- index[1] + sample(c(-1,0,1),1)
                     index[2] <- index[2] + sample(c(-1,0,1),1)
                     #Not a wrapped world; you can fall off the edge!
+                    # - if they've migrated where there are already species, let's just add everything to that (for simplicity, more than anything :p)
                     if(all(index<=size))
-                        abundance[index] <- env[index] - rpois(1,abund.lam)
+                        abundance[index] <- env[index] - rpois(1,abund.lam) + abundance[index]
                 }
             }
         }
