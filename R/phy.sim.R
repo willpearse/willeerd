@@ -55,16 +55,7 @@ sim.bd.tree <- function(speciate=0.1, extinction=0.025, time.steps=20){
     }
 
     #Turn into ape::phylo and return
-    spp.no <- sort(c(edge[species,2], extinct))
-    spp.edges <- edge[,2] %in% spp.no
-    to.change <- matrix(0, nrow=nrow(edge), ncol=ncol(edge))
-    for(i in seq_along(spp.no))
-        to.change[edge >= spp.no[i]] <- to.change[edge >= spp.no[i]] + 1
-    edge <- edge - to.change + length(spp.no)
-    edge[spp.edges,2] <- seq_along(spp.no)
-    tree <- list(edge=edge, tip.label=paste("r", order(spp.no), sep="_"), edge.length=edge.length, Nnode=length(spp.no)-1)
-    class(tree) <- "phylo"
-    return(tree)
+    return(edge2phylo(edge, species, extinct, edge.length))
 }
 
 #' \code{sim.bd.tr.tree} simulate phylogeny and trait under birth/death process linked to trait evolution
@@ -151,6 +142,19 @@ sim.bd.tr.tree <- function(speciate=0.1, extinction=0.025, time.steps=20, tr.ran
     }
 
     #Turn into ape::phylo and return
+    return(edge2phylo(edge, species, extinct, edge.length, traits))
+}
+
+#' \code{edge2phylo} convert a simulated edge matrix to an ape:phylo aobject
+#' 
+#' @param edge a two-column matrix where the first column is the start node, the second the destination
+#' @param species which of the rows in the edge matrix are extant species
+#' @param extinct which of the tips in the edge matrix are extinct
+#' @details This is a bit OTT because you can figure out what's extinct and extant from the edge matrix itself; I'm just lazy and this matches onto exactly what my code already does. See sim.bd.tree for use; it's really an internal function.
+#' @return ape::phylo object with random tip.labels
+#' @author Will Pearse
+#' @export
+edge2phylo <- function(edge, species, extinct=numeric(0), edge.length=NA, traits=NULL){
     spp.no <- sort(c(edge[species,2], extinct))
     spp.edges <- edge[,2] %in% spp.no
     to.change <- matrix(0, nrow=nrow(edge), ncol=ncol(edge))
@@ -162,3 +166,4 @@ sim.bd.tr.tree <- function(speciate=0.1, extinction=0.025, time.steps=20, tr.ran
     class(tree) <- "phylo"
     return(tree)
 }
+
