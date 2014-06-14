@@ -10,4 +10,8 @@ License: See README
 Imports:
     caper,
     ape,
-    animation
+    animation,
+    Taxonstand,
+    phytools,
+    plotrix,
+    plyr

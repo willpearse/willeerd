@@ -124,11 +124,12 @@ congeneric.merge <- function(lookup, tree, split="_", cite=TRUE){
 #' @return The bound phylogeny
 #' @author Will Pearse
 #' @import ape
-#' @examples
+#' @examples \dontrun{
 #' tree <- read.tree(text='((Areplacement:10,GenusB:10):10, GenusC:10);')
 #' genera <- c("Areplacement","Areplacement","Areplacement","GenusB","GenusB","GenusC")
 #' species <- c("A robur","A ilex","A crud","B homo","B sapiens","C us")
 #' tree <- make.composite.with.polytomies(tree, genera, species)
+#' }
 #' @export
 make.composite.with.polytomies <- function(tree, genera, species, max.genus.age=NA){
     genera <- as.character(genera)

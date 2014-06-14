@@ -10,9 +10,12 @@
 #' @return A list containing the tip.groups plotted, the clade colours they were plotted under, the edges that were obscured by the cartoon printing, and a list of the number of the node that each polytomy started under
 #' @author Will Pearse
 #' @examples
+#' \dontrun{
+#' require(ape)
 #' tree <- read.tree(text="(((((A,B,C,D,E),(F,G,H,I,J)),H),K),L);")
 #' cartoon.plot(tree, auto.polies=TRUE)
 #' cartoon.plot(tree, list(1:5, 6:10), colours="grey30")
+#' }
 #' @import ape
 #' @import caper
 #' @export
@@ -64,10 +67,11 @@ cartoon.plot <- function(tree, tip.groups=vector("list", 0), clade.col=NULL, br.
 #' @details Add text to the outside of a circular phylogeny. Useful if you've made a cartoon phylogeny and need to label clades.
 #' @return The centers of each piece of text (in radians)
 #' @author Will Pearse
-#' @examples
+#' @examples \dontrun{
 #' tree <- read.tree(text="(((((A,B,C,D,E),(F,G,H,I,J)),H),K),L);")
 #' ringlabels(tip.groups=list(1:5, 6:10) text=list("this is yet", "another test"))
 #' tree <- read.tree(text="(((((A,B,C,D,E),(F,G,H,I,J)),H),K),L);")
+#' }
 #' @import ape
 #' @import plotrix
 #' @export
@@ -115,12 +119,13 @@ tipring <- function(tips, col, radial.adj=1, ...){
 #' @details A way of getting evenly spaced tip labels on a radial phylogeny. Just run the examples, it's quite simple. This is a very minorly-editted version of tiplabels; I can't take much credit! Don't cite this, cite ape!
 #' @return ...exactly as tiplabels
 #' @author Will Pearse
-#' @examples
+#' @examples \dontrun{
 #' tree <- stree(128, type="balanced")
 #' plot(tree, type="radial", show.tip.label=FALSE)
 #' willeerd.tiplabels(tip=seq(128), pch=20)
 #' willeerd.tiplabels(tip=seq(128), pch=20, radial.adj=1.05, col="red")
 #' willeerd.tiplabels(tip=seq(128), pch=20, radial.adj=1.1, col="blue")
+#' }
 #' @import ape
 #' @export
 willeerd.tiplabels <- function (text, tip, adj = c(0.5, 0.5), radial.adj=1, frame = "rect", pch = NULL, thermo = NULL, pie = NULL, piecol = NULL, col = "black", bg = "yellow", horiz = FALSE, width = NULL, height = NULL, ...) 
@@ -143,12 +148,13 @@ willeerd.tiplabels <- function (text, tip, adj = c(0.5, 0.5), radial.adj=1, fram
 #' @details A way of getting evenly spaced node labels on a radial phylogeny. Just run the examples, it's quite simple. This is a very minorly-editted version of nodelabels; I can't take much credit! Don't cite this, cite ape!
 #' @return ...exactly as nodelabels
 #' @author Will Pearse
-#' @examples
+#' @examples \dontrun{
 #' tree <- stree(128, type="balanced")
 #' plot(tree, type="radial", show.tip.label=FALSE)
 #' willeerd.nodelabels(pch=20)
 #' willeerd.nodelabels(pch=20, radial.adj=1.05, col="red")
 #' willeerd.nodelabels(pch=20, radial.adj=1.1, col="blue")
+#' }
 #' @import ape
 #' @export
 willeerd.nodelabels <- function (text, node, adj = c(0.5, 0.5), radial.adj=1, frame = "rect", pch = NULL, thermo = NULL, pie = NULL, piecol = NULL, col = "black", bg = "lightblue", horiz = FALSE, width = NULL, height = NULL, ...) 
@@ -168,11 +174,12 @@ willeerd.nodelabels <- function (text, node, adj = c(0.5, 0.5), radial.adj=1, fr
 #' @details Almost *identical* to plot.phylo, but with root edge width control. Just try the example. Don't cite this, cite ape!
 #' @return ...exactly as plot.phylo
 #' @author Will Pearse
-#' @examples
+#' @examples \dontrun{
 #' tree <- rtree(20)
 #' par(mfrow=c(1,2))
 #' plot(tree, edge.width=6, root.edge=TRUE)
 #' willeerd.plot.phylo(tree, edge.width=6, root.edge=TRUE)
+#' }
 #' @import ape
 #' @export
 willeerd.plot.phylo <- function (x, type = "phylogram", use.edge.length = TRUE, node.pos = NULL, 
@@ -594,7 +601,6 @@ willeerd.plot.phylo <- function (x, type = "phylogram", use.edge.length = TRUE, 
 #' \code{willeerd.BOTHlabels} Internal function for plotting tiplabels and nodelabels
 #' @details Almost identical to the similar function in ape! This is an internal function
 #' @author Will Pearse
-#' @examples
 #' @import ape
 willeerd.BOTHlabels <- function (text, sel, XX, YY, adj, frame, pch, thermo, pie, piecol, 
     col, bg, horiz, width, height, ...) 
@@ -713,11 +719,12 @@ willeerd.BOTHlabels <- function (text, sel, XX, YY, adj, frame, pch, thermo, pie
 #' @details Thins out additional species, making a phylogeny smaller by reducing the size of each terminal polytomy by scale.factor
 #' @return List where first element is the factorised phylogeny, the second the tips that were dropped from each node (on the original tree; I can't guarantee the returning tree's structure)u
 #' @author Will Pearse
-#' @examples
+#' @examples \dontrun{
 #' tree <- read.tree(text="((A,B,C,D,E),F);")
 #' t <- factorise.tree(tree, 0.5)
 #' plot(t$tree)
-e#' @import ape
+#' }
+#' @import ape
 #' @export
 factorise.tree <- function(tree, scale.factor=0.5){
     #Get the terminal nodes

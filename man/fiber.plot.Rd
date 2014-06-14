@@ -2,8 +2,8 @@
 \alias{fiber.plot}
 \title{\code{fiber.plot} (fibrously) plots a phylogeny}
 \usage{
-  fiber.plot(tree, gif, slices = NULL, colours = NULL,
-    pca = NULL, clade.mat = NULL, delay = 0.2)
+fiber.plot(tree, gif, n.groups = 10, n.pc = 1:5, slices = NULL,
+  colours = NULL, pca = NULL, clade.mat = NULL, delay = 0.2)
 }
 \arguments{
   \item{tree}{a phylogeny (of class phylo) you wish to
@@ -31,18 +31,18 @@
   output GID; default 0.2 seconds}
 }
 \value{
-  The data that were plotted last, the PCA and clade.matrix
-  to speed later plots, and the colours used.
+The data that were plotted last, the PCA and clade.matrix
+to speed later plots, and the colours used.
 }
 \description{
-  \code{fiber.plot} (fibrously) plots a phylogeny
+\code{fiber.plot} (fibrously) plots a phylogeny
 }
 \details{
-  Probably best to just plot it out and see what happens.
-  There are much smater ways of plotting out what species
-  goes where, but this is what I've done... As with
-  everything I have written, this is very much unchecked!
-  Beware!!!
+Probably best to just plot it out and see what happens.
+There are much smater ways of plotting out what species
+goes where, but this is what I've done... As with
+everything I have written, this is very much unchecked!
+Beware!!!
 }
 \examples{
 \dontrun{
@@ -53,6 +53,6 @@ fiber.plot(perissodactyla.tree, "test.gif", clade.mat=output$clade.mat, pca=outp
 }
 }
 \author{
-  Will Pearse
+Will Pearse
 }
 

@@ -75,7 +75,9 @@ transition.calc <- function(tree, continuous, discrete, simmap.model="ER", simma
   return(output)
 }
 
+#' \code{transition.calc} regression of aged transitions among character states
 #This has got a naughty which()[1] that couldn cause trouble...
+#' @export
 plot.transition.calc <- function(x, ...){
     counts <- with(x$transitions, table(transition, node))
     modal.trans <- rownames(counts)[unlist(apply(counts, 2, function(x) which(max(x)==x)[1]))]

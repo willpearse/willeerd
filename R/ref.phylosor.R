@@ -1,5 +1,19 @@
-#Heavily based on picante::phylosor:
-# - do not use without citing both willeerd and picante!!!
+#' \code{ref.phylosor} Calculate phylosor using a single assembalge as a reference
+#' 
+#' @param samp community matrix
+#' @param reference community/assemblage to be used as a reference
+#' @param tree ape::phylo phylogeny
+#' @details Exactly as phylosor, except calculates the distance of everything in samp from the reference. A "good" way of dealing with large datasets, if you can't fit everything in memory at the same time.
+#' @return A vector of the distances of the communities from the reference
+#' @author Will Pearse, based on picante::phylosor
+#' @examples \dontrun{
+#' require(picante)
+#' data(phylocom)
+#' phylosor(phylocom$sample, phylocom$phylo)
+#' ref.phylosor(phylocom$sample, phylocom$sample[6,], phylocom$phylo)
+#' }
+#' @import ape
+#' @export
 ref.phylosor <- function (samp, reference, tree){
     #Argument checking
     if(is.null(tree$edge.length))
@@ -30,7 +44,3 @@ ref.phylosor <- function (samp, reference, tree){
     }
     return(phylodist)
 }
-
-data(phylocom)
-phylosor(phylocom$sample, phylocom$phylo)
-ref.phylosor(phylocom$sample, phylocom$sample[6,], phylocom$phylo)
