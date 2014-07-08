@@ -1,0 +1,51 @@
+\name{make.composite.with.polytomies}
+\alias{make.composite.with.polytomies}
+\title{\code{make.composite.with.polytomies} Bind groups of species into a phylogeny as polytomies}
+\usage{
+make.composite.with.polytomies(tree, genera, species, max.genus.age = NA)
+}
+\arguments{
+  \item{tree}{the backbone phylogeny into which the species
+  are to be placed}
+
+  \item{genera}{vector, of same length as species, that
+  delimits the groups that the species are to be placed
+  together with}
+
+  \item{species}{the species that will be bound into the
+  phylogeny}
+
+  \item{max.genus.age}{the maximum age of a group (genus)
+  to be bound into the phylogeny; if NA (the default) there
+  is no maximum age, and it just follows the bladj
+  algorithm}
+}
+\value{
+The bound phylogeny
+}
+\description{
+\code{make.composite.with.polytomies} Bind groups of
+species into a phylogeny as polytomies
+}
+\details{
+Binds species into the phylogeny using the values in
+'genera' to group the species into polytomies. Each entry
+in 'genus' should be present in the tree, since the
+polytomy will be bound in replacing this genus. This allows
+you, essentially, to reproduce much of the functionality of
+Phylomatic. It's intended to be used to replace a
+representative of a genus in a phylogeny with lots of
+members of that genus. See the example for usage.
+}
+\examples{
+\dontrun{
+tree <- read.tree(text='((Areplacement:10,GenusB:10):10, GenusC:10);')
+genera <- c("Areplacement","Areplacement","Areplacement","GenusB","GenusB","GenusC")
+species <- c("A robur","A ilex","A crud","B homo","B sapiens","C us")
+tree <- make.composite.with.polytomies(tree, genera, species)
+}
+}
+\author{
+Will Pearse
+}
+

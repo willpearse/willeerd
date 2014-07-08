@@ -1,0 +1,41 @@
+\name{willeerd.nodelabels}
+\alias{willeerd.nodelabels}
+\title{\code{willeerd.nodelabels} Plot tip labels with radial spacing}
+\usage{
+willeerd.nodelabels(text, node, adj = c(0.5, 0.5), radial.adj = 1,
+  frame = "rect", pch = NULL, thermo = NULL, pie = NULL,
+  piecol = NULL, col = "black", bg = "lightblue", horiz = FALSE,
+  width = NULL, height = NULL, ...)
+}
+\arguments{
+  \item{radial.adj}{A multiplier for how far out each node
+  label should be}
+
+  \item{...everything}{else is exactly as nodelabels}
+}
+\value{
+...exactly as nodelabels
+}
+\description{
+\code{willeerd.nodelabels} Plot tip labels with radial
+spacing
+}
+\details{
+A way of getting evenly spaced node labels on a radial
+phylogeny. Just run the examples, it's quite simple. This
+is a very minorly-editted version of nodelabels; I can't
+take much credit! Don't cite this, cite ape!
+}
+\examples{
+\dontrun{
+tree <- stree(128, type="balanced")
+plot(tree, type="radial", show.tip.label=FALSE)
+willeerd.nodelabels(pch=20)
+willeerd.nodelabels(pch=20, radial.adj=1.05, col="red")
+willeerd.nodelabels(pch=20, radial.adj=1.1, col="blue")
+}
+}
+\author{
+Will Pearse
+}
+

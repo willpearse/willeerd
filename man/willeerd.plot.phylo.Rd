@@ -1,0 +1,36 @@
+\name{willeerd.plot.phylo}
+\alias{willeerd.plot.phylo}
+\title{\code{willeerd.plot.phylo} Plot a rooted phylogeny (with more control over the root)}
+\usage{
+willeerd.plot.phylo(x, type = "phylogram", use.edge.length = TRUE,
+  node.pos = NULL, show.tip.label = TRUE, show.node.label = FALSE,
+  edge.color = "black", edge.width = 1, edge.lty = 1, font = 3,
+  cex = par("cex"), adj = NULL, srt = 0, no.margin = FALSE,
+  root.edge = FALSE, label.offset = 0, underscore = FALSE, x.lim = NULL,
+  y.lim = NULL, direction = "rightwards", lab4ut = "horizontal",
+  tip.color = "black", plot = TRUE, rotate.tree = 0, open.angle = 0,
+  ...)
+}
+\value{
+...exactly as plot.phylo
+}
+\description{
+\code{willeerd.plot.phylo} Plot a rooted phylogeny (with
+more control over the root)
+}
+\details{
+Almost *identical* to plot.phylo, but with root edge width
+control. Just try the example. Don't cite this, cite ape!
+}
+\examples{
+\dontrun{
+tree <- rtree(20)
+par(mfrow=c(1,2))
+plot(tree, edge.width=6, root.edge=TRUE)
+willeerd.plot.phylo(tree, edge.width=6, root.edge=TRUE)
+}
+}
+\author{
+Will Pearse
+}
+

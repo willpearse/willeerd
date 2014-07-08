@@ -1,0 +1,19 @@
+\name{willeerd.BOTHlabels}
+\alias{willeerd.BOTHlabels}
+\title{\code{willeerd.BOTHlabels} Internal function for plotting tiplabels and nodelabels}
+\usage{
+willeerd.BOTHlabels(text, sel, XX, YY, adj, frame, pch, thermo, pie, piecol,
+  col, bg, horiz, width, height, ...)
+}
+\description{
+\code{willeerd.BOTHlabels} Internal function for plotting
+tiplabels and nodelabels
+}
+\details{
+Almost identical to the similar function in ape! This is an
+internal function
+}
+\author{
+Will Pearse
+}
+

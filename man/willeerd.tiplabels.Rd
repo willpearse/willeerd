@@ -1,0 +1,41 @@
+\name{willeerd.tiplabels}
+\alias{willeerd.tiplabels}
+\title{\code{willeerd.tiplabels} Plot tip labels with radial spacing}
+\usage{
+willeerd.tiplabels(text, tip, adj = c(0.5, 0.5), radial.adj = 1,
+  frame = "rect", pch = NULL, thermo = NULL, pie = NULL,
+  piecol = NULL, col = "black", bg = "yellow", horiz = FALSE,
+  width = NULL, height = NULL, ...)
+}
+\arguments{
+  \item{radial.adj}{A multiplier for how far out each tip
+  label should be}
+
+  \item{...everything}{else is exactly as tiplabels}
+}
+\value{
+...exactly as tiplabels
+}
+\description{
+\code{willeerd.tiplabels} Plot tip labels with radial
+spacing
+}
+\details{
+A way of getting evenly spaced tip labels on a radial
+phylogeny. Just run the examples, it's quite simple. This
+is a very minorly-editted version of tiplabels; I can't
+take much credit! Don't cite this, cite ape!
+}
+\examples{
+\dontrun{
+tree <- stree(128, type="balanced")
+plot(tree, type="radial", show.tip.label=FALSE)
+willeerd.tiplabels(tip=seq(128), pch=20)
+willeerd.tiplabels(tip=seq(128), pch=20, radial.adj=1.05, col="red")
+willeerd.tiplabels(tip=seq(128), pch=20, radial.adj=1.1, col="blue")
+}
+}
+\author{
+Will Pearse
+}
+

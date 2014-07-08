@@ -1,0 +1,38 @@
+\name{bind.ultrametric.by.replacement}
+\alias{bind.ultrametric.by.replacement}
+\title{\code{bind.ultrametric.by.replacement} Bind one phylogeny into another, resulting in an ultrametric phylogeny}
+\usage{
+bind.ultrametric.by.replacement(backbone, donor, replacing.tip.label,
+  donor.length = NA)
+}
+\arguments{
+  \item{backbone}{the backbone phylogeny into which the
+  donor is to be bound}
+
+  \item{donor}{the phylogeny to bound into the backbone
+  phylogeny}
+
+  \item{replacing.tip.label}{the species in the donor
+  phylogeny that's being replaced by the donor phylogeny}
+
+  \item{donor.length}{how deep the donor phylogeny should
+  be cut into the backbone phylogeny. If NA (default), then
+  the bladj algorithm is followed (or, in plain English,
+  it's put half-way along the branch)}
+}
+\value{
+The bound phylogeny
+}
+\description{
+\code{bind.ultrametric.by.replacement} Bind one phylogeny
+into another, resulting in an ultrametric phylogeny
+}
+\details{
+Binds a phylogeny (donor) into a bigger phylogeny
+('backbone'); useful if you're building a phylogeny a la
+Phylomatic.
+}
+\author{
+Will Pearse
+}
+
