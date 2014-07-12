@@ -153,3 +153,29 @@ make.composite.with.polytomies <- function(tree, genera, species, max.genus.age=
     }
     return(tree)
 }
+
+#' \code{randomly.resolve} Moves species around randomly within a genus
+#' 
+#' @param tree phylogeny containing the species to be shunted around
+#' @param to.resolve species to be shunted around
+#' @param species the species that will be bound into the phylogeny
+#' @param split split by which tip.labels will be cut to find congeners
+#' @details Moves species around within a genus, binding them back in as a sister to a species in the same genus. Does nothing if a specified species is the only member of a genus in the tree.
+#' This isn't the perfect way to deal with species for which you have no DNA data, but it's definitely better than just sticking them in at the base of a genus (which makes no sense to me). Do this many, many times! If you're desperate to move things around at a depth different from the genus, either modify the code (...) or use Family_Genus_species names in your phylogeny.
+#' @return The randomised phylogeny
+#' @author Will Pearse
+#' @import ape
+#' @export
+randomly.resolve <- function(tree, to.resolve, split="_"){
+    for(species in to.resolve){
+        genus <- strsplit(species, split)[[1]][1]
+        if(sum(grepl(genus, tree$tip.label)) > 1){
+            tree <- drop.tip(tree, species)
+            sister <- sample(grep(genus, tree$tip.label, value=TRUE), 1)
+            edge.length <- tree$edge.length[which(tree$edge[,2] == which(tree$tip.label == sister))]
+            poly <- make.polytomy(c(sister, species), edge.length/2)
+            tree <- bind.ultrametric.by.replacement(tree, poly, sister)
+        }
+    }
+    return(tree)
+}
