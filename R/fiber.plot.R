@@ -20,7 +20,6 @@
 #' @import ape
 #' @import animation
 #' @export
-
 fiber.plot <- function(tree, gif, n.groups=10, n.pc=1:5, slices=NULL, colours=NULL, pca=NULL, clade.mat=NULL, delay=0.2){
   #Assertions and argument checking
   if(!inherits(tree, "phylo"))
