@@ -1,12 +1,12 @@
 Package: willeerd
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
+Title: Will's Eco-Evo R coDe
+Version: 1.0-0
 Date: 2013-11-22
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: See README
+Author: William D. Pearse
+Maintainer: William D. Pearse <wdpearse@umn.edu>
+Description: A group of functions to perform analyses that Will finds useful - phylogeny building and plotting, eco-phylogenetic simulations, taxonomic cleaning... etc. All described at http://willeerd.wordpress.com/
+License: Use must cite willeerd when using this code (and phyloGenerator, where specified): DOI:10.5281/zenodo.10855
 Imports:
     caper,
     ape,
