@@ -14,7 +14,8 @@
 #' require(ape)
 #' tree <- read.tree(text="(((((A,B,C,D,E),(F,G,H,I,J)),H),K),L);")
 #' cartoon.plot(tree, auto.polies=TRUE)
-#' cartoon.plot(tree, list(1:5, 6:10), colours="grey30")
+#' cartoon.plot(tree, list(1:5, 6:10), clade.col="grey30")
+#' cartoon.plot(tree, list(1:5, 6:10), clade.col=c("blue", "red"))
 #' }
 #' @import ape
 #' @import caper
@@ -39,10 +40,11 @@ cartoon.plot <- function(tree, tip.groups=vector("list", 0), clade.col=NULL, br.
         clade.col <- rep(clade.col[1], length(tip.groups))
     to.be.joined <- rep(FALSE, nrow(tree$edge))
     nodes <- vector("list", length(tip.groups))
-    clade.mat <- clade.matrix(tree)
     to.be.joined <- tree$edge[,2] %in% unlist(tip.groups)
-    for(i in seq_along(tip.groups))
-        nodes[[i]] <- which(apply(clade.mat$clade.matrix, 1, function(x) sum(x[tip.groups[[i]]]==1)>=2 & all(x[-tip.groups[[i]]]==0)))
+    clade.mems <- lapply(seq(from=length(tree$tip.label)+1,to=max(tree$edge[,2])), clade.members, tree)
+    for(i in seq_along(tip.groups)){
+        nodes[[i]] <- which(sapply(clade.mems, function(x) identical(x,tip.groups[[i]])))+length(tree$tip.label)
+    }
     to.be.joined <- to.be.joined | tree$edge[,1] %in% unlist(nodes)
     if(is.null(br.clade.col))
         plot(tree, edge.col=ifelse(to.be.joined, "white", "black"), ...) else plot(tree, plot=FALSE, ...)
@@ -717,7 +719,7 @@ willeerd.BOTHlabels <- function (text, sel, XX, YY, adj, frame, pch, thermo, pie
 #' @param tree ape::phylo phylogeny to be 'factorised'
 #' @param scale.factor multiplier for the number of species within a terminal polytomy. E.g., 0.1 means each terminal polytomy will be ~10% its current size
 #' @details Thins out additional species, making a phylogeny smaller by reducing the size of each terminal polytomy by scale.factor
-#' @return List where first element is the factorised phylogeny, the second the tips that were dropped from each node (on the original tree; I can't guarantee the returning tree's structure)u
+#' @return List where first element is the factorised phylogeny, the second the tips that were dropped from each node (on the original tree; I can't guarantee the returning tree's structure)
 #' @author Will Pearse
 #' @examples \dontrun{
 #' tree <- read.tree(text="((A,B,C,D,E),F);")
@@ -733,16 +735,20 @@ factorise.tree <- function(tree, scale.factor=0.5){
 
     #Reduce the diversity of those nodes and collect tips to drop
     nodes <- round(nodes * scale.factor)
-    to.drop <- vector("list", length(nodes))
-    names(to.drop) <- names(nodes)
+    x <- 1
+    to.drop <- numeric(length(tree$tip.label))
     for(i in seq_along(nodes)){
+        prog.bar(i,length(nodes))
         t <- tree$edge[tree$edge[,1]==names(nodes[i]),2]
         #Not all "terminal" polytomies have only tips descending (outgroups!)
         t <- t[t <= length(tree$tip.label)]
-        to.drop[[i]] <- t[-1:-nodes[i]]
+        t <- t[-1:-nodes[i]]
+        to.drop[seq(from=x, length.out=length(t))] <- t
+        x <- x+length(t)
     }
     
     #Drop those tips and return
-    tree <- drop.tip(tree, unlist(to.drop))
+    tree <- drop.tip(tree, unique(to.drop))
     return(list(tree=tree, dropped=to.drop))
 }
+t2 <- factorise.tree(tpl, 0.001)
