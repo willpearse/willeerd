@@ -19,6 +19,7 @@
 #' }
 #' @import ape
 #' @import caper
+#' @importFrom caper clade.members
 #' @export
 cartoon.plot <- function(tree, tip.groups=vector("list", 0), clade.col=NULL, br.clade.col=NULL, auto.polies=FALSE, ...){
     if(auto.polies == TRUE){
@@ -714,12 +715,15 @@ willeerd.BOTHlabels <- function (text, sel, XX, YY, adj, frame, pch, thermo, pie
             col = col, bg = bg, ...)
 }
 
-#' \code{factorise.tree} 'Factorise' a tree by removing out species, making it easier to plot/manipulate
+#' \code{factorise.tree} Thin species on a large phylogeny, making it easier to plot/manipulate
+#'
+#' Useful if you do a lot of large-phylogeny plotting, consider using
+#' in concert with \code{\link{cartoon.plot}}
 #' 
 #' @param tree ape::phylo phylogeny to be 'factorised'
-#' @param scale.factor multiplier for the number of species within a terminal polytomy. E.g., 0.1 means each terminal polytomy will be ~10% its current size
+#' @param scale.factor multiplier for the number of species within a terminal polytomy. E.g., 0.1 means each terminal polytomy will be roughly 10% its current size
 #' @details Thins out additional species, making a phylogeny smaller by reducing the size of each terminal polytomy by scale.factor
-#' @return List where first element is the factorised phylogeny, the second the tips that were dropped from each node (on the original tree; I can't guarantee the returning tree's structure)
+#' @return List where first element is the factorised phylogeny, the second the tips that were dropped from each node (on the original tree; I can't guarantee the structure of the returned tree)
 #' @author Will Pearse
 #' @examples \dontrun{
 #' tree <- read.tree(text="((A,B,C,D,E),F);")
@@ -751,4 +755,3 @@ factorise.tree <- function(tree, scale.factor=0.5){
     tree <- drop.tip(tree, unique(to.drop))
     return(list(tree=tree, dropped=to.drop))
 }
-t2 <- factorise.tree(tpl, 0.001)

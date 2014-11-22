@@ -33,7 +33,8 @@ Makes a simple 'cartoon' phylogeny where polytomies are joined together in a big
 require(ape)
 tree <- read.tree(text="(((((A,B,C,D,E),(F,G,H,I,J)),H),K),L);")
 cartoon.plot(tree, auto.polies=TRUE)
-cartoon.plot(tree, list(1:5, 6:10), colours="grey30")
+cartoon.plot(tree, list(1:5, 6:10), clade.col="grey30")
+cartoon.plot(tree, list(1:5, 6:10), clade.col=c("blue", "red"))
 }
 }
 \author{
