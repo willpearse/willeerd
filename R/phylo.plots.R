@@ -89,6 +89,7 @@ ringlabels <- function(tip.groups, text, radial.adj=1.05, ...){
     invisible(radians[i])
 }
 
+#' @export
 tipring <- function(tips, col, radial.adj=1, ...){
     lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
     if (missing(tips)) 
