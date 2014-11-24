@@ -50,10 +50,8 @@ cartoon.plot <- function(tree, tip.groups=vector("list", 0), clade.col=NULL, br.
     if(is.null(br.clade.col))
         plot(tree, edge.col=ifelse(to.be.joined, "white", "black"), ...) else plot(tree, plot=FALSE, ...)
     pp <- get("last_plot.phylo", envir = .PlotPhyloEnv)
-    for(i in seq_along(tip.groups)){
-        range <- tip.groups[[i]][c(1,length(tip.groups[[i]]))]
-        polygon(pp$xx[c(min(nodes[[i]]),range)], pp$yy[c(min(nodes[[i]]),range)], col=clade.col[i], border=clade.col[i])
-    }
+    for(i in seq_along(tip.groups))
+        polygon(pp$xx[c(tip.groups[[i]],nodes[[i]],tip.groups[[i]])], pp$yy[c(tip.groups[[i]],nodes[[i]],tip.groups[[i]])], col=clade.col[i], border=clade.col[i])
     if(!is.null(br.clade.col)){
         par(new=TRUE)
         plot(tree, edge.col=ifelse(to.be.joined, br.clade.col, "black"), ...)
@@ -715,7 +713,8 @@ willeerd.BOTHlabels <- function (text, sel, XX, YY, adj, frame, pch, thermo, pie
             col = col, bg = bg, ...)
 }
 
-#' \code{factorise.tree} Thin species on a large phylogeny, making it easier to plot/manipulate
+#' \code{factorise.tree} Thin species on a large phylogeny, making it
+#' easier to plot/manipulate
 #'
 #' Useful if you do a lot of large-phylogeny plotting, consider using
 #' in concert with \code{\link{cartoon.plot}}
