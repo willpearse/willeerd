@@ -37,32 +37,32 @@ transition.calc <- function(tree, continuous, discrete, simmap.model="ER", simma
   #Find transitions (can be multiple per branch); pre-allocation could make too long a data.frame (CHECK!)
   states <- levels(discrete)
   tmp <- rep(NA, length(simmap)*length(simmap[[1]]$maps))
-  transitions <- data.frame(from=tmp, to=tmp, node=tmp)
+  transitions <- data.frame(from=tmp, to=tmp, end.node=tmp)
   x <- 1
   for(i in seq_along(simmap)){
-      for(j in seq(from=length(simmap[[i]]$tip.label)+1, to=length(simmap[[i]]$maps))){
-          if(length(simmap[[i]]$maps[[j]]) > 1){
-              for(k in seq(from=1, length.out=length(simmap[[i]]$maps[[j]])-1)){
+      for(j in seq_along(simmap[[i]]$maps)){
+          if(tree$edge[j,2]>length(tree$tip.label) & length(simmap[[i]]$maps[[j]]) > 1){
+              for(k in seq(from=1, to=length(simmap[[i]]$maps[[j]])-1)){
                   transitions$from[x] <- states[which(states==names(simmap[[i]]$maps[[j]])[k])]
                   transitions$to[x] <- states[which(states==names(simmap[[i]]$maps[[j]])[k+1])]
-                  transitions$node[x] <- j
+                  transitions$end.node[x] <- tree$edge[j,2]
                   x <- x + 1
                   if(x >= nrow(transitions))
-                      transitions <- rbind(transitions, data.frame(from=tmp, to=tmp, node=tmp))
+                      transitions <- rbind(transitions, data.frame(from=tmp, to=tmp, end.node=tmp))
               }
           } else {
               transitions$from[x] <- states[which(states==names(simmap[[i]]$maps[[j]])[1])]
               transitions$to[x] <- states[which(states==names(simmap[[i]]$maps[[j]])[1])]
-              transitions$node[x] <- j
+              transitions$end.node[x] <- tree$edge[j,2]
               x <- x + 1
               if(x == nrow(transitions))
-                  transitions <- rbind(transitions, data.frame(from=tmp, to=tmp, node=tmp))
+                  transitions <- rbind(transitions, data.frame(from=tmp, to=tmp, end.node=tmp))
           }
       }
   }
   transitions <- transitions[!is.na(transitions$from),]
   #Age the transitions
-  transitions$age <- max(t.ltt$times) - t.ltt$times[match(transitions$node, names(t.ltt$times))]
+  transitions$age <- max(t.ltt$times) - t.ltt$times[match(transitions$end.node, names(t.ltt$times))]
   transitions$first <- c(TRUE, rep(FALSE, nrow(transitions)-1))
   
   #Reconstruct continuous state
@@ -79,7 +79,8 @@ transition.calc <- function(tree, continuous, discrete, simmap.model="ER", simma
 #This has got a naughty which()[1] that couldn cause trouble...
 #' @export
 plot.transition.calc <- function(x, ...){
-    counts <- with(x$transitions, table(transition, node))
-    modal.trans <- rownames(counts)[unlist(apply(counts, 2, function(x) which(max(x)==x)[1]))]
-    plot(x$cont.sim$ace[-1] ~ factor(modal.trans))
+    counts <- with(x$transitions, table(transition, end.node))
+    modal.trans <- setNames(rownames(counts)[unlist(apply(counts, 2, function(x) which(max(x)==x)[1]))], unique(x$transitions$end.node))
+    t <- x$cont.sim$ace[names(x$cont.sim$ace) %in% names(modal.trans)]
+    plot(t ~ factor(modal.trans), ...)
 }

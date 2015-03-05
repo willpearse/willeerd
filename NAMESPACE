@@ -2,6 +2,7 @@
 
 S3method(plot,transition.calc)
 export(bind.ultrametric.by.replacement)
+export(bonnie.f)
 export(cartoon.plot)
 export(congeneric.merge)
 export(drip.node.labels)
