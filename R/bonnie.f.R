@@ -1,4 +1,5 @@
-#' \code{bonnie.f} Calculate nested F-ratios - "correctly" (for Bonnie Waring, anyway)
+#' \code{bonnie.f} Calculate nested F-ratios - "correctly" (for Bonnie
+#' Waring, anyway)
 #' 
 #' @param model standard linear model to be calculated
 #' @param high Highest hierarchical-level in model
@@ -8,12 +9,6 @@
 #' @author Will Pearse
 #' @export
 bonnie.f <- function(model, high, low){
-    high <- "top"
-    low <- "bottom"
-    y <- rnorm(100)
-    top <- sample(letters[1:3], 100, TRUE)
-    bottom <- sample(letters[4:6], 100, TRUE)
-    model <- aov(y ~ top/bottom)
     coefs <- summary(model)[[1]]
     names <- gsub(" ", "", rownames(coefs))
     top.fac <- which(names == high)
