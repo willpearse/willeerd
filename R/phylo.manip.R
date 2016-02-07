@@ -69,8 +69,8 @@ drip.node.labels <- function(tree, clade.mat=NULL){
     #Order node labels according to age
     named.nodes <- which(tree$node.label != "")
     names(named.nodes) <- tree$node.label[named.nodes]
-    ages.nodes <- sapply(named.nodes, function(x) sum(tree$edge.length[clade.mat[x+length(tree$tip.label),] == 1]))
-    named.nodes <- named.nodes[order(ages.nodes, decreasing=TRUE)]
+    ages.nodes <- sapply(named.nodes, function(x) nodeheight(tree, which(tree$node.label==x)))
+    named.nodes <- named.nodes[order(ages.nodes)]
 
     #Loop through nodes and label down the tree (slow, I know...)
     node.labels <- character(tree$Nnode)

@@ -66,7 +66,7 @@ transition.calc <- function(tree, continuous, discrete, simmap.model="ER", simma
   transitions$first <- c(TRUE, rep(FALSE, nrow(transitions)-1))
   
   #Reconstruct continuous state
-  anc.continuous <- anc.ML(tree, continuous, maxit=anc.ML.maxit)
+  anc.continuous <- fastAnc(tree, continuous, CI=TRUE)
   #Get the modal reconstructed nodal value and plot against that
   transitions$transition <- with(transitions, paste(from, to, sep="_"))
   #Prepare output and return
