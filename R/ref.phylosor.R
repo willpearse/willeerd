@@ -12,7 +12,8 @@
 #' phylosor(phylocom$sample, phylocom$phylo)
 #' ref.phylosor(phylocom$sample, phylocom$sample[6,], phylocom$phylo)
 #' }
-#' @import ape
+#' @importFrom picante pd
+#' @importFrom ape is.rooted
 #' @export
 ref.phylosor <- function (samp, reference, tree){
     #Argument checking

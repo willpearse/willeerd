@@ -12,8 +12,6 @@ randomly.resolve(tree, to.resolve, split = "_")
 \item{to.resolve}{species to be shunted around}
 
 \item{split}{split by which tip.labels will be cut to find congeners}
-
-\item{species}{the species that will be bound into the phylogeny}
 }
 \value{
 The randomised phylogeny
@@ -22,8 +20,15 @@ The randomised phylogeny
 \code{randomly.resolve} Moves species around randomly within a genus
 }
 \details{
-Moves species around within a genus, binding them back in as a sister to a species in the same genus. Does nothing if a specified species is the only member of a genus in the tree.
-This isn't the perfect way to deal with species for which you have no DNA data, but it's definitely better than just sticking them in at the base of a genus (which makes no sense to me). Do this many, many times! If you're desperate to move things around at a depth different from the genus, either modify the code (...) or use Family_Genus_species names in your phylogeny.
+Moves species around within a genus, binding them back in
+as a sister to a species in the same genus. Does nothing if a
+specified species is the only member of a genus in the tree.  This
+isn't the perfect way to deal with species for which you have no
+DNA data, but it's definitely better than just sticking them in at
+the base of a genus (which makes no sense to me). Do this many,
+many times! If you're desperate to move things around at a depth
+different from the genus, either modify the code (...) or use
+Family_Genus_species names in your phylogeny.
 }
 \author{
 Will Pearse

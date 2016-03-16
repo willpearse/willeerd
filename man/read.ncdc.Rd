@@ -17,6 +17,9 @@ it'll get overwritten and then deleted!}
 Load US NCDC data (climate, etc.)
 }
 \examples{
+\dontrun{
+#The location/name of this file changes as it's updated, so below is only a guide...
 palmer <- read.ncdc("http://www1.ncdc.noaa.gov/pub/data/cirs/climdiv/climdiv-pdsidv-v1.0.0-20160105")
+}
 }
 

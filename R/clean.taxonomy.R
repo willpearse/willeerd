@@ -7,8 +7,7 @@
 #' @details Binds a phylogeny (donor) into a bigger phylogeny ('backbone'); useful if you're building a phylogeny a la Phylomatic.
 #' @return The bound phylogeny
 #' @author Will Pearse
-#' @import ape
-#' @export
+#' @importFrom ape bind.tree
 bind.ultrametric.by.replacement <- function(backbone, donor, replacing.tip.label, donor.length=NA){	
     bind.point <- which(backbone$tip.label == replacing.tip.label)
     backbone <- bind.tree(backbone, donor, where=bind.point)
@@ -31,8 +30,7 @@ bind.ultrametric.by.replacement <- function(backbone, donor, replacing.tip.label
 #' @details A light wrapper around some ape functions to make a polytomy. If you need it you'll know.
 #' @return ape::phylo polytomy
 #' @author Will Pearse
-#' @import ape
-#' @export
+#' @importFrom ape as.phylo.formula
 make.polytomy <- function(species, tip.length=NA){	
     d.f <- data.frame(spp=factor(species))	
     polytomy <- as.phylo.formula(~spp, data=d.f)	
@@ -47,8 +45,6 @@ make.polytomy <- function(species, tip.length=NA){
 #' @details If you find yourself manually manipulating phylogenies a lot, this is for you
 #' @return The edge length leading to that tip
 #' @author Will Pearse
-#' @import ape
-#' @export
 find.unique.branch.length <- function(tree, tip){	
     which.tip <- which(tree$tip.label == tip)
     which.edge <- which(tree$edge[,2] == which.tip)
@@ -62,8 +58,8 @@ find.unique.branch.length <- function(tree, tip){
 #' @details Binds a phylogeny (donor) into a bigger phylogeny ('backbone'); useful if you're building a phylogeny a la Phylomatic.
 #' @return data.frame with the original species names ('original'), and the cleaned names if in TPL or NULL if not found in TPL ('clean'). Can be used as a lookup table in other functions, or in your own stuff.
 #' @author Will Pearse
-#' @import Taxonstand
-#' @import plyr
+#' @importFrom Taxonstand TPLck
+#' @importFrom plyr ldply
 #' @export
 make.clean.taxon.lookup <- function(species){
     #Basic name scrubbing
@@ -84,11 +80,12 @@ make.clean.taxon.lookup <- function(species){
 #' @param lookup Either a data.frame from 'make.clean.taxon.lookup' or a vector of species names to be bound into the tree if missing from it
 #' @param tree The phylogeny to have those species inserted into it
 #' @param cite Set to FALSE to have it stop bleating at you to cite phyloGenerator.
-#' @details Binds missing species into a phylogeny by replacing that clade , which this function (and all its internal calls) 
+#' @param split split by which tip.labels will be cut to find congeners
+#' @details Binds missing species into a phylogeny by replacing that
+#' clade , which this function (and all its internal calls)
 #' @return The bound phylogeny
 #' @author Will Pearse
-#' @import ape
-#' @export
+#' @importFrom ape drop.tip
 congeneric.merge <- function(lookup, tree, split="_", cite=TRUE){
     if(cite)
         cat("\nCite phyloGenerator when using this: DOI-10.1111/2041-210X.12055")
@@ -123,14 +120,13 @@ congeneric.merge <- function(lookup, tree, split="_", cite=TRUE){
 #' This allows you, essentially, to reproduce much of the functionality of Phylomatic. It's intended to be used to replace a representative of a genus in a phylogeny with lots of members of that genus. See the example for usage.
 #' @return The bound phylogeny
 #' @author Will Pearse
-#' @import ape
 #' @examples \dontrun{
+#' require(ape)
 #' tree <- read.tree(text='((Areplacement:10,GenusB:10):10, GenusC:10);')
 #' genera <- c("Areplacement","Areplacement","Areplacement","GenusB","GenusB","GenusC")
 #' species <- c("A robur","A ilex","A crud","B homo","B sapiens","C us")
 #' tree <- make.composite.with.polytomies(tree, genera, species)
 #' }
-#' @export
 make.composite.with.polytomies <- function(tree, genera, species, max.genus.age=NA){
     genera <- as.character(genera)
     species <- as.character(species)
@@ -158,13 +154,19 @@ make.composite.with.polytomies <- function(tree, genera, species, max.genus.age=
 #' 
 #' @param tree phylogeny containing the species to be shunted around
 #' @param to.resolve species to be shunted around
-#' @param species the species that will be bound into the phylogeny
 #' @param split split by which tip.labels will be cut to find congeners
-#' @details Moves species around within a genus, binding them back in as a sister to a species in the same genus. Does nothing if a specified species is the only member of a genus in the tree.
-#' This isn't the perfect way to deal with species for which you have no DNA data, but it's definitely better than just sticking them in at the base of a genus (which makes no sense to me). Do this many, many times! If you're desperate to move things around at a depth different from the genus, either modify the code (...) or use Family_Genus_species names in your phylogeny.
+#' @details Moves species around within a genus, binding them back in
+#' as a sister to a species in the same genus. Does nothing if a
+#' specified species is the only member of a genus in the tree.  This
+#' isn't the perfect way to deal with species for which you have no
+#' DNA data, but it's definitely better than just sticking them in at
+#' the base of a genus (which makes no sense to me). Do this many,
+#' many times! If you're desperate to move things around at a depth
+#' different from the genus, either modify the code (...) or use
+#' Family_Genus_species names in your phylogeny.
 #' @return The randomised phylogeny
 #' @author Will Pearse
-#' @import ape
+#' @importFrom ape drop.tip
 #' @export
 randomly.resolve <- function(tree, to.resolve, split="_"){
     for(species in to.resolve){

@@ -13,7 +13,7 @@ ringlabels(tip.groups, text, radial.adj = 1.05, ...)
 
 \item{radial.adj}{a multiplier for how far out each tip label should be}
 
-\item{...}{additional arguments for plotrix::arctext}
+\item{...}{additional arguments for \code{\link[plotrix]{arctext}}}
 }
 \value{
 The centers of each piece of text (in radians)

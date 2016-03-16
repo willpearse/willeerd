@@ -11,6 +11,7 @@
 #' @return The data that were plotted last, the PCA and clade.matrix to speed later plots, and the colours used.
 #' @author Will Pearse
 #' @export
+#' @importFrom fields rdist
 trait.space <- function(comm, abundance=FALSE, plot=TRUE, coexist=NULL, mask=NULL, ...){
     #Internal functions
     prop.coexist <- function(x){
@@ -41,7 +42,7 @@ trait.space <- function(comm, abundance=FALSE, plot=TRUE, coexist=NULL, mask=NUL
     #Make a coexistence matrix if necessary
     if(is.null(coexist)){
         if(abundance) coexist <- prop.coexist(comm) else
-            coexist <- prop.abundance.coexist(comm)
+            coexist <- prop.coexist.abundance(comm)
     }
 
     #Fit parameters and neaten results

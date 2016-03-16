@@ -5,7 +5,11 @@
 #' deleted) as part of read process. If this file already exists,
 #' it'll get overwritten and then deleted!
 #' @examples
+#' \dontrun{
+#' #The location/name of this file changes as it's updated, so below is only a guide...
 #' palmer <- read.ncdc("http://www1.ncdc.noaa.gov/pub/data/cirs/climdiv/climdiv-pdsidv-v1.0.0-20160105")
+#' }
+#' @export
 read.ncdc <- function(file, tempout="delete.me.txt"){
     #Process and load raw file
     data <- read.delim(file, header=FALSE, as.is=TRUE)[,1]

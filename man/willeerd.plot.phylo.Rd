@@ -13,14 +13,68 @@ willeerd.plot.phylo(x, type = "phylogram", use.edge.length = TRUE,
   tip.color = "black", plot = TRUE, rotate.tree = 0, open.angle = 0,
   ...)
 }
+\arguments{
+\item{x}{phylogeny to plot}
+
+\item{type}{see \code{\link[ape]{plot.phylo}}}
+
+\item{use.edge.length}{see \code{\link[ape]{plot.phylo}}}
+
+\item{node.pos}{see \code{\link[ape]{plot.phylo}}}
+
+\item{show.tip.label}{see \code{\link[ape]{plot.phylo}}}
+
+\item{show.node.label}{see \code{\link[ape]{plot.phylo}}}
+
+\item{edge.color}{see \code{\link[ape]{plot.phylo}}}
+
+\item{edge.width}{see \code{\link[ape]{plot.phylo}}}
+
+\item{edge.lty}{see \code{\link[ape]{plot.phylo}}}
+
+\item{font}{see \code{\link[ape]{plot.phylo}}}
+
+\item{cex}{see \code{\link[ape]{plot.phylo}}}
+
+\item{adj}{see \code{\link[ape]{plot.phylo}}}
+
+\item{srt}{see \code{\link[ape]{plot.phylo}}}
+
+\item{no.margin}{see \code{\link[ape]{plot.phylo}}}
+
+\item{root.edge}{see \code{\link[ape]{plot.phylo}}}
+
+\item{label.offset}{see \code{\link[ape]{plot.phylo}}}
+
+\item{underscore}{see \code{\link[ape]{plot.phylo}}}
+
+\item{x.lim}{see \code{\link[ape]{plot.phylo}}}
+
+\item{y.lim}{see \code{\link[ape]{plot.phylo}}}
+
+\item{direction}{see \code{\link[ape]{plot.phylo}}}
+
+\item{lab4ut}{see \code{\link[ape]{plot.phylo}}}
+
+\item{tip.color}{see \code{\link[ape]{plot.phylo}}}
+
+\item{plot}{see \code{\link[ape]{plot.phylo}}}
+
+\item{rotate.tree}{see \code{\link[ape]{plot.phylo}}}
+
+\item{open.angle}{see \code{\link[ape]{plot.phylo}}}
+
+\item{...}{see \code{\link[ape]{plot.phylo}}}
+}
 \value{
-...exactly as plot.phylo
+...exactly as \code{\link[ape]{plot.phylo}}
 }
 \description{
 \code{willeerd.plot.phylo} Plot a rooted phylogeny (with more control over the root)
 }
 \details{
-Almost *identical* to plot.phylo, but with root edge width control. Just try the example. Don't cite this, cite ape!
+Almost *identical* to plot.phylo, but with root edge width
+control. Just try the example. Don't cite this, cite ape!
 }
 \examples{
 \dontrun{

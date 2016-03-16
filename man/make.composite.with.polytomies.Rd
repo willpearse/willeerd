@@ -27,6 +27,7 @@ This allows you, essentially, to reproduce much of the functionality of Phylomat
 }
 \examples{
 \dontrun{
+require(ape)
 tree <- read.tree(text='((Areplacement:10,GenusB:10):10, GenusC:10);')
 genera <- c("Areplacement","Areplacement","Areplacement","GenusB","GenusB","GenusC")
 species <- c("A robur","A ilex","A crud","B homo","B sapiens","C us")

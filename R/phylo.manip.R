@@ -59,6 +59,7 @@ label.tree.nodes <- function(tree, groups, clade.mat=NULL){
 #' @return Vector of labels; could be put straight into an ape::phylo object in the node.label slot.
 #' @author Will Pearse
 #' @importFrom caper clade.matrix
+#' @importFrom phytools nodeheight
 #' @export
 drip.node.labels <- function(tree, clade.mat=NULL){
     #Assertions and argument checking

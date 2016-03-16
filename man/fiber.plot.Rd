@@ -4,8 +4,8 @@
 \alias{fiber.plot}
 \title{\code{fiber.plot} (fibrously) plots a phylogeny}
 \usage{
-fiber.plot(tree, gif, n.groups = 10, n.pc = 1:5, slices = NULL,
-  colours = NULL, pca = NULL, clade.mat = NULL, delay = 0.2)
+fiber.plot(tree, gif, slices = NULL, colours = NULL, pca = NULL,
+  clade.mat = NULL, delay = 0.2)
 }
 \arguments{
 \item{tree}{a phylogeny (of class phylo) you wish to plot}

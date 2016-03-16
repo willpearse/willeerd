@@ -10,9 +10,35 @@ willeerd.tiplabels(text, tip, adj = c(0.5, 0.5), radial.adj = 1,
   width = NULL, height = NULL, ...)
 }
 \arguments{
+\item{text}{see \code{\link[ape]{tiplabels}}}
+
+\item{tip}{see \code{\link[ape]{tiplabels}}}
+
+\item{adj}{see \code{\link[ape]{tiplabels}}}
+
 \item{radial.adj}{A multiplier for how far out each tip label should be}
 
-\item{...everything}{else is exactly as tiplabels}
+\item{frame}{see \code{\link[ape]{tiplabels}}}
+
+\item{pch}{see \code{\link[ape]{tiplabels}}}
+
+\item{thermo}{see \code{\link[ape]{tiplabels}}}
+
+\item{pie}{see \code{\link[ape]{tiplabels}}}
+
+\item{piecol}{see \code{\link[ape]{tiplabels}}}
+
+\item{col}{see \code{\link[ape]{tiplabels}}}
+
+\item{bg}{see \code{\link[ape]{tiplabels}}}
+
+\item{horiz}{see \code{\link[ape]{tiplabels}}}
+
+\item{width}{see \code{\link[ape]{tiplabels}}}
+
+\item{height}{see \code{\link[ape]{tiplabels}}}
+
+\item{...}{see \code{\link[ape]{tiplabels}}}
 }
 \value{
 ...exactly as tiplabels

@@ -1,14 +1,12 @@
 #' \code{transition.calc} regression of aged transitions among character states
 #' 
-#' @param tree a phylogeny (of class phylo) you wish to plot
-#' @param gif name of GIF you would like to create
-#' @param slices the time slices you would like to plot out; NULL (default) means one every unit time
-#' @param colours colours for each speciation event (thus must be same length as 'slices'); NULL (default) uses 'rainbow'
-#' @param pca PCA (of class prcomp) of phylogenetic dissimilarity matrix; NULL calculates one, I recommend you use the output from a previous run to speed things up
-#' @param clade.mat clade matrix (of class clade.matrix) of phylogeny; NULL calculates one, I recommend you use the output from a previous run to speed things up
-#' @param delay the delay between each slice's frame in the output GID; default 0.2 seconds
-#' @details Probably best to just plot it out and see what happens. There are much smater ways of plotting out what species goes where, but this is what I've done... As with everything I have written, this is very much unchecked! Beware!!!
-#' @return The data that were plotted last, the PCA and clade.matrix to speed later plots, and the colours used.
+#' @param tree a phylogeny (of class phylo)
+#' @param continuous continuous trait (named) to be regressed
+#' @param discrete discrete category (named) species are evolving
+#' between whose transitions you wish to model
+#' @param simmap.model parameter for \code{\link[phytools]{make.simmap}}
+#' @param simmap.pi parameter for \code{\link[phytools]{make.simmap}}
+#' @param simmap.nsim parameter for \code{\link[phytools]{make.simmap}}
 #' @author Will Pearse
 #' @examples \dontrun{
 #' tree <- rtree(50)
@@ -17,10 +15,9 @@
 #' silly <- transition.calc(tree, continuous, discrete, simmap.nsim=10)
 #' plot(silly)
 #' }
-#' @import phytools
-#' @import caper
+#' @importFrom phytools fastAnc make.simmap ltt
 #' @export
-transition.calc <- function(tree, continuous, discrete, simmap.model="ER", simmap.nsim=1000, simmap.pi="estimated", anc.ML.maxit=100000){
+transition.calc <- function(tree, continuous, discrete, simmap.model="ER", simmap.nsim=1000, simmap.pi="estimated"){
   #Assertions and argument checking
   if(!inherits(tree, "phylo")) stop("Error: '", deparse(substitute(simmap)), "' must be of class 'phylo'")
   if(!is.factor(discrete)) stop("Error: '", deparse(substitute(discrete)), "' must be a factor; preferably a discrete character!")
@@ -76,6 +73,8 @@ transition.calc <- function(tree, continuous, discrete, simmap.model="ER", simma
 }
 
 #' \code{transition.calc} regression of aged transitions among character states
+#' @param x \code{link{transition.calc}} object to be plotted
+#' @param ... additional arguments passed to \code{\link{plot}}
 #This has got a naughty which()[1] that couldn cause trouble...
 #' @export
 plot.transition.calc <- function(x, ...){

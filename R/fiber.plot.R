@@ -16,11 +16,11 @@
 #' fiber.plot(perissodactyla.tree, "test.gif", clade.mat=output$clade.mat, pca=output$pca)
 #' #...that was much quicker (...on bigger phylogenies...), because we used the PCA and clade.matrix from last time
 #' }
-#' @import caper
-#' @import ape
-#' @import animation
+#' @importFrom caper clade.matrix
+#' @importFrom ape branching.times
+#' @importFrom animation saveGIF
 #' @export
-fiber.plot <- function(tree, gif, n.groups=10, n.pc=1:5, slices=NULL, colours=NULL, pca=NULL, clade.mat=NULL, delay=0.2){
+fiber.plot <- function(tree, gif, slices=NULL, colours=NULL, pca=NULL, clade.mat=NULL, delay=0.2){
   #Assertions and argument checking
   if(!inherits(tree, "phylo"))
     stop("'", deparse(substitute(tree)), "' must be of class 'phylo'")
@@ -49,7 +49,8 @@ fiber.plot <- function(tree, gif, n.groups=10, n.pc=1:5, slices=NULL, colours=NU
   #spp.val <- pca$x[,1]
   dimension <- floor(sqrt(length(spp.val))) + 1
   #data <- data.frame(species=names(spp.val), x=rep(seq(dimension), dimension)[seq_along(spp.val)], y=rep(seq(dimension), each=dimension)[seq_along(spp.val)])
-  
+
+  #n.groups <- 10; n.pc <- 1:5
   #clust <- hclust(dist(pca$x[,n.pc]))
   #groups <- cutree(clust, k=n.groups)
   #spp.val <- spp.val[order(groups, pca$x[,1])]

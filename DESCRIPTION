@@ -1,15 +1,15 @@
 Package: willeerd
 Type: Package
 Title: Will's Eco-Evo R coDe
-Version: 1.0-0
+Version: 1.1-0
 Date: 2013-11-22
 Author: William D. Pearse
 Maintainer: William D. Pearse <wdpearse@umn.edu>
-Description: A group of functions to perform analyses that Will finds useful -
-    phylogeny building and plotting, eco-phylogenetic simulations, taxonomic
-    cleaning... etc. All described at http://willeerd.wordpress.com/
-License: Use must cite willeerd when using this code (and phyloGenerator, where
-    specified): DOI:10.5281/zenodo.10855
+Description: A group of functions to perform analyses that Will finds
+    useful: phylogeny building and plotting, eco-phylogenetic
+    simulations, taxonomic cleaning, and more. All described at
+    http://willeerd.wordpress.com/.
+License: GPL-3
 Imports:
     caper,
     ape,
@@ -17,4 +17,5 @@ Imports:
     Taxonstand,
     phytools,
     plotrix,
-    plyr
+    picante,
+    fields

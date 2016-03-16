@@ -6,6 +6,11 @@
 \usage{
 \method{plot}{transition.calc}(x, ...)
 }
+\arguments{
+\item{x}{\code{link{transition.calc}} object to be plotted}
+
+\item{...}{additional arguments passed to \code{\link{plot}}}
+}
 \description{
 \code{transition.calc} regression of aged transitions among character states
 }

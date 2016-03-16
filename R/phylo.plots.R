@@ -1,3 +1,6 @@
+#Weirdness with as.name throughout this file is to "trick" R's "no
+#visible binding for global variable checks"
+
 #' \code{cartoon.plot} Plot phylogenies with cartoon-ised polytomies
 #' 
 #' @param tree ape::phylo object
@@ -17,8 +20,6 @@
 #' cartoon.plot(tree, list(1:5, 6:10), clade.col="grey30")
 #' cartoon.plot(tree, list(1:5, 6:10), clade.col=c("blue", "red"))
 #' }
-#' @import ape
-#' @import caper
 #' @importFrom caper clade.members
 #' @export
 cartoon.plot <- function(tree, tip.groups=vector("list", 0), clade.col=NULL, br.clade.col=NULL, auto.polies=FALSE, ...){
@@ -49,7 +50,7 @@ cartoon.plot <- function(tree, tip.groups=vector("list", 0), clade.col=NULL, br.
     to.be.joined <- to.be.joined | tree$edge[,1] %in% unlist(nodes)
     if(is.null(br.clade.col))
         plot(tree, edge.col=ifelse(to.be.joined, "white", "black"), ...) else plot(tree, plot=FALSE, ...)
-    pp <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+    pp <- get("last_plot.phylo", envir = as.name(".PlotPhyloEnv"))
     for(i in seq_along(tip.groups))
         polygon(pp$xx[c(tip.groups[[i]],nodes[[i]],tip.groups[[i]])], pp$yy[c(tip.groups[[i]],nodes[[i]],tip.groups[[i]])], col=clade.col[i], border=clade.col[i])
     if(!is.null(br.clade.col)){
@@ -64,7 +65,7 @@ cartoon.plot <- function(tree, tip.groups=vector("list", 0), clade.col=NULL, br.
 #' @param tip.groups list where each element are the tip *numbers* that should be labelled
 #' @param text list when each element is the text to be plotted
 #' @param radial.adj a multiplier for how far out each tip label should be
-#' @param ... additional arguments for plotrix::arctext
+#' @param ... additional arguments for \code{\link[plotrix]{arctext}}
 #' @details Add text to the outside of a circular phylogeny. Useful if you've made a cartoon phylogeny and need to label clades.
 #' @return The centers of each piece of text (in radians)
 #' @author Will Pearse
@@ -73,11 +74,10 @@ cartoon.plot <- function(tree, tip.groups=vector("list", 0), clade.col=NULL, br.
 #' ringlabels(tip.groups=list(1:5, 6:10) text=list("this is yet", "another test"))
 #' tree <- read.tree(text="(((((A,B,C,D,E),(F,G,H,I,J)),H),K),L);")
 #' }
-#' @import ape
-#' @import plotrix
+#' @importFrom plotrix arctext
 #' @export
 ringlabels <- function(tip.groups, text, radial.adj=1.05, ...){
-    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+    lastPP <- get("last_plot.phylo", envir = as.name(".PlotPhyloEnv"))
     raw <- seq(0, 2 * pi * (1 - 1/lastPP$Ntip) - 2 * pi * 1/360, length.out=lastPP$Ntip)
     edges <- lastPP$edge[,2]
     edges <- order(edges[edges <= lastPP$Ntip])
@@ -89,9 +89,24 @@ ringlabels <- function(tip.groups, text, radial.adj=1.05, ...){
     invisible(radians[i])
 }
 
+#' \code{tipring} Add tiplabels to a circular phylogeny
+#' @param tips Numbers of tips in phylogeny's \code{tip.labels} to be plotted
+#' @param col Colour (can be of length > 1) to plot tips
+#' @param radial.adj adjustment factor (multiplier) for spacing of tip-labels
+#' @param ... additional arguments passed to \code{\link[graphics]{lines}}
+#' @details A way of getting evenly spaced node labels on a radial phylogeny. Just run the examples, it's quite simple. This is a very minorly-editted version of nodelabels; I can't take much credit! Don't cite this, cite ape!
+#' @return ...exactly as nodelabels
+#' @author Will Pearse
+#' @examples \dontrun{
+#' tree <- stree(128, type="balanced")
+#' plot(tree, type="radial", show.tip.label=FALSE)
+#' tipring(pch=20)
+#' tipring(pch=20, radial.adj=1.05, col="red")
+#' tipring(pch=20, radial.adj=1.1, col="blue")
+#' }
 #' @export
 tipring <- function(tips, col, radial.adj=1, ...){
-    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+    lastPP <- get("last_plot.phylo", envir = as.name(".PlotPhyloEnv"))
     if (missing(tips)) 
         tips <- seq(lastPP$Ntip)
     edges <- lastPP$edge[,2]
@@ -117,7 +132,20 @@ tipring <- function(tips, col, radial.adj=1, ...){
 #' \code{willeerd.tiplabels} Plot tip labels with radial spacing
 #' 
 #' @param radial.adj A multiplier for how far out each tip label should be
-#' @param ...everything else is exactly as tiplabels
+#' @param text see \code{\link[ape]{tiplabels}}
+#' @param tip see \code{\link[ape]{tiplabels}}
+#' @param adj see \code{\link[ape]{tiplabels}}
+#' @param frame see \code{\link[ape]{tiplabels}}
+#' @param pch see \code{\link[ape]{tiplabels}}
+#' @param thermo see \code{\link[ape]{tiplabels}}
+#' @param pie see \code{\link[ape]{tiplabels}}
+#' @param piecol see \code{\link[ape]{tiplabels}}
+#' @param col see \code{\link[ape]{tiplabels}}
+#' @param bg see \code{\link[ape]{tiplabels}}
+#' @param horiz see \code{\link[ape]{tiplabels}}
+#' @param width see \code{\link[ape]{tiplabels}}
+#' @param height see \code{\link[ape]{tiplabels}}
+#' @param ... see \code{\link[ape]{tiplabels}}
 #' @details A way of getting evenly spaced tip labels on a radial phylogeny. Just run the examples, it's quite simple. This is a very minorly-editted version of tiplabels; I can't take much credit! Don't cite this, cite ape!
 #' @return ...exactly as tiplabels
 #' @author Will Pearse
@@ -128,11 +156,11 @@ tipring <- function(tips, col, radial.adj=1, ...){
 #' willeerd.tiplabels(tip=seq(128), pch=20, radial.adj=1.05, col="red")
 #' willeerd.tiplabels(tip=seq(128), pch=20, radial.adj=1.1, col="blue")
 #' }
-#' @import ape
+#' @importFrom ape BOTHlabels
 #' @export
 willeerd.tiplabels <- function (text, tip, adj = c(0.5, 0.5), radial.adj=1, frame = "rect", pch = NULL, thermo = NULL, pie = NULL, piecol = NULL, col = "black", bg = "yellow", horiz = FALSE, width = NULL, height = NULL, ...) 
 {
-    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+    lastPP <- get("last_plot.phylo", envir = as.name(".PlotPhyloEnv"))
     if (missing(tip)) 
         tip <- 1:lastPP$Ntip
     lastPP$xx <- lastPP$xx * radial.adj
@@ -145,23 +173,39 @@ willeerd.tiplabels <- function (text, tip, adj = c(0.5, 0.5), radial.adj=1, fram
 
 #' \code{willeerd.nodelabels} Plot tip labels with radial spacing
 #' 
-#' @param radial.adj A multiplier for how far out each node label should be
-#' @param ...everything else is exactly as nodelabels
-#' @details A way of getting evenly spaced node labels on a radial phylogeny. Just run the examples, it's quite simple. This is a very minorly-editted version of nodelabels; I can't take much credit! Don't cite this, cite ape!
+#' @param node which node(s) to plot
+#' @details A way of getting evenly spaced node labels on a radial
+#' phylogeny. Just run the examples, it's quite simple. This is a very
+#' minorly-editted version of nodelabels; I can't take much credit!
+#' Don't cite this, cite ape!
+#' @param radial.adj a multiplier for how far out each node label
+#' should be
+#' @param text see \code{\link[ape]{nodelabels}}
+#' @param adj see \code{\link[ape]{nodelabels}}
+#' @param frame see \code{\link[ape]{nodelabels}}
+#' @param pch see \code{\link[ape]{nodelabels}}
+#' @param thermo see \code{\link[ape]{nodelabels}}
+#' @param pie see \code{\link[ape]{nodelabels}}
+#' @param piecol see \code{\link[ape]{nodelabels}}
+#' @param col see \code{\link[ape]{nodelabels}}
+#' @param bg see \code{\link[ape]{nodelabels}}
+#' @param horiz see \code{\link[ape]{nodelabels}}
+#' @param width see \code{\link[ape]{nodelabels}}
+#' @param height see \code{\link[ape]{nodelabels}}
+#' @param ... see \code{\link[ape]{nodelabels}}
 #' @return ...exactly as nodelabels
 #' @author Will Pearse
 #' @examples \dontrun{
 #' tree <- stree(128, type="balanced")
 #' plot(tree, type="radial", show.tip.label=FALSE)
 #' willeerd.nodelabels(pch=20)
-#' willeerd.nodelabels(pch=20, radial.adj=1.05, col="red")
-#' willeerd.nodelabels(pch=20, radial.adj=1.1, col="blue")
+#' willeerd.nodelabels(pch=20, adj=1.05, col="red")
+#' willeerd.nodelabels(pch=20, adj=1.1, col="blue")
 #' }
-#' @import ape
 #' @export
-willeerd.nodelabels <- function (text, node, adj = c(0.5, 0.5), radial.adj=1, frame = "rect", pch = NULL, thermo = NULL, pie = NULL, piecol = NULL, col = "black", bg = "lightblue", horiz = FALSE, width = NULL, height = NULL, ...) 
+willeerd.nodelabels <- function (text, node, radial.adj=1, adj = c(0.5, 0.5), frame = "rect", pch = NULL, thermo = NULL, pie = NULL, piecol = NULL, col = "black", bg = "lightblue", horiz = FALSE, width = NULL, height = NULL, ...) 
 {
-    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+    lastPP <- get("last_plot.phylo", envir = as.name(".PlotPhyloEnv"))
     if (missing(node)) 
         node <- (lastPP$Ntip + 1):length(lastPP$xx)
     lastPP$xx <- lastPP$xx * radial.adj
@@ -173,8 +217,35 @@ willeerd.nodelabels <- function (text, node, adj = c(0.5, 0.5), radial.adj=1, fr
 }
 
 #' \code{willeerd.plot.phylo} Plot a rooted phylogeny (with more control over the root)
-#' @details Almost *identical* to plot.phylo, but with root edge width control. Just try the example. Don't cite this, cite ape!
-#' @return ...exactly as plot.phylo
+#' @details Almost *identical* to plot.phylo, but with root edge width
+#' control. Just try the example. Don't cite this, cite ape!
+#' @param x phylogeny to plot
+#' @param type see \code{\link[ape]{plot.phylo}}
+#' @param use.edge.length see \code{\link[ape]{plot.phylo}}
+#' @param node.pos see \code{\link[ape]{plot.phylo}}
+#' @param show.tip.label see \code{\link[ape]{plot.phylo}}
+#' @param show.node.label see \code{\link[ape]{plot.phylo}}
+#' @param edge.color see \code{\link[ape]{plot.phylo}}
+#' @param edge.width see \code{\link[ape]{plot.phylo}}
+#' @param edge.lty see \code{\link[ape]{plot.phylo}}
+#' @param font see \code{\link[ape]{plot.phylo}}
+#' @param cex see \code{\link[ape]{plot.phylo}}
+#' @param adj see \code{\link[ape]{plot.phylo}}
+#' @param srt see \code{\link[ape]{plot.phylo}}
+#' @param no.margin see \code{\link[ape]{plot.phylo}}
+#' @param root.edge see \code{\link[ape]{plot.phylo}}
+#' @param label.offset see \code{\link[ape]{plot.phylo}}
+#' @param underscore see \code{\link[ape]{plot.phylo}}
+#' @param x.lim see \code{\link[ape]{plot.phylo}}
+#' @param y.lim see \code{\link[ape]{plot.phylo}}
+#' @param direction see \code{\link[ape]{plot.phylo}}
+#' @param lab4ut see \code{\link[ape]{plot.phylo}}
+#' @param tip.color see \code{\link[ape]{plot.phylo}}
+#' @param plot see \code{\link[ape]{plot.phylo}}
+#' @param rotate.tree see \code{\link[ape]{plot.phylo}}
+#' @param open.angle see \code{\link[ape]{plot.phylo}}
+#' @param ... see \code{\link[ape]{plot.phylo}}
+#' @return ...exactly as \code{\link[ape]{plot.phylo}}
 #' @author Will Pearse
 #' @examples \dontrun{
 #' tree <- rtree(20)
@@ -182,8 +253,8 @@ willeerd.nodelabels <- function (text, node, adj = c(0.5, 0.5), radial.adj=1, fr
 #' plot(tree, edge.width=6, root.edge=TRUE)
 #' willeerd.plot.phylo(tree, edge.width=6, root.edge=TRUE)
 #' }
-#' @import ape
 #' @export
+#' @importFrom ape unrooted.xy phylogram.plot circular.plot cladogram.plot
 willeerd.plot.phylo <- function (x, type = "phylogram", use.edge.length = TRUE, node.pos = NULL, 
     show.tip.label = TRUE, show.node.label = FALSE, edge.color = "black", 
     edge.width = 1, edge.lty = 1, font = 3, cex = par("cex"), 
@@ -202,16 +273,16 @@ willeerd.plot.phylo <- function (x, type = "phylogram", use.edge.length = TRUE, 
     .nodeHeight <- function(Ntip, Nnode, edge, Nedge, yy) .C("node_height", 
         as.integer(Ntip), as.integer(Nnode), as.integer(edge[, 
             1]), as.integer(edge[, 2]), as.integer(Nedge), as.double(yy), 
-        DUP = FALSE, PACKAGE = "ape")[[6]]
+        PACKAGE = "ape")[[6]]
     .nodeDepth <- function(Ntip, Nnode, edge, Nedge) .C("node_depth", 
         as.integer(Ntip), as.integer(Nnode), as.integer(edge[, 
             1]), as.integer(edge[, 2]), as.integer(Nedge), double(Ntip + 
-            Nnode), DUP = FALSE, PACKAGE = "ape")[[6]]
+            Nnode), PACKAGE = "ape")[[6]]
     .nodeDepthEdgelength <- function(Ntip, Nnode, edge, Nedge, 
         edge.length) .C("node_depth_edgelength", as.integer(Ntip), 
         as.integer(Nnode), as.integer(edge[, 1]), as.integer(edge[, 
             2]), as.integer(Nedge), as.double(edge.length), double(Ntip + 
-            Nnode), DUP = FALSE, PACKAGE = "ape")[[7]]
+            Nnode), PACKAGE = "ape")[[7]]
     Nedge <- dim(x$edge)[1]
     Nnode <- x$Nnode
     ROOT <- Ntip + 1
@@ -268,7 +339,7 @@ willeerd.plot.phylo <- function (x, type = "phylogram", use.edge.length = TRUE, 
             ans <- .C("node_height_clado", as.integer(Ntip), 
                 as.integer(Nnode), as.integer(z$edge[, 1]), as.integer(z$edge[, 
                   2]), as.integer(Nedge), double(Ntip + Nnode), 
-                as.double(yy), DUP = FALSE, PACKAGE = "ape")
+                as.double(yy), PACKAGE = "ape")
             xx <- ans[[6]] - 1
             yy <- ans[[7]]
         }
@@ -596,14 +667,11 @@ willeerd.plot.phylo <- function (x, type = "phylogram", use.edge.length = TRUE, 
         x.lim = x.lim, y.lim = y.lim, direction = direction, 
         tip.color = tip.color, Ntip = Ntip, Nnode = Nnode)
     assign("last_plot.phylo", c(L, list(edge = xe, xx = xx, yy = yy)), 
-        envir = .PlotPhyloEnv)
+        envir = as.name(".PlotPhyloEnv"))
     invisible(L)
 }
 
-#' \code{willeerd.BOTHlabels} Internal function for plotting tiplabels and nodelabels
-#' @details Almost identical to the similar function in ape! This is an internal function
-#' @author Will Pearse
-#' @import ape
+#' @importFrom ape floating.pie.asp
 willeerd.BOTHlabels <- function (text, sel, XX, YY, adj, frame, pch, thermo, pie, piecol, 
     col, bg, horiz, width, height, ...) 
 {
@@ -721,7 +789,7 @@ willeerd.BOTHlabels <- function (text, sel, XX, YY, adj, frame, pch, thermo, pie
 #' in concert with \code{\link{cartoon.plot}}
 #' 
 #' @param tree ape::phylo phylogeny to be 'factorised'
-#' @param scale.factor multiplier for the number of species within a terminal polytomy. E.g., 0.1 means each terminal polytomy will be roughly 10% its current size
+#' @param scale.factor multiplier for the number of species within a terminal polytomy. E.g., 0.1 means each terminal polytomy will be roughly 10\% its current size
 #' @details Thins out additional species, making a phylogeny smaller by reducing the size of each terminal polytomy by scale.factor
 #' @return List where first element is the factorised phylogeny, the second the tips that were dropped from each node (on the original tree; I can't guarantee the structure of the returned tree)
 #' @author Will Pearse
@@ -730,7 +798,7 @@ willeerd.BOTHlabels <- function (text, sel, XX, YY, adj, frame, pch, thermo, pie
 #' t <- factorise.tree(tree, 0.5)
 #' plot(t$tree)
 #' }
-#' @import ape
+#' @importFrom ape drop.tip
 #' @export
 factorise.tree <- function(tree, scale.factor=0.5){
     #Get the terminal nodes

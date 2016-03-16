@@ -10,7 +10,7 @@ factorise.tree(tree, scale.factor = 0.5)
 \arguments{
 \item{tree}{ape::phylo phylogeny to be 'factorised'}
 
-\item{scale.factor}{multiplier for the number of species within a terminal polytomy. E.g., 0.1 means each terminal polytomy will be roughly 10% its current size}
+\item{scale.factor}{multiplier for the number of species within a terminal polytomy. E.g., 0.1 means each terminal polytomy will be roughly 10\% its current size}
 }
 \value{
 List where first element is the factorised phylogeny, the second the tips that were dropped from each node (on the original tree; I can't guarantee the structure of the returned tree)

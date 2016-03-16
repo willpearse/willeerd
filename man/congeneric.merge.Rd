@@ -11,6 +11,8 @@ congeneric.merge(lookup, tree, split = "_", cite = TRUE)
 
 \item{tree}{The phylogeny to have those species inserted into it}
 
+\item{split}{split by which tip.labels will be cut to find congeners}
+
 \item{cite}{Set to FALSE to have it stop bleating at you to cite phyloGenerator.}
 }
 \value{
@@ -20,7 +22,8 @@ The bound phylogeny
 \code{congeneric.merge} Bind missing species into a phylogeny based on taxonomy
 }
 \details{
-Binds missing species into a phylogeny by replacing that clade , which this function (and all its internal calls)
+Binds missing species into a phylogeny by replacing that
+clade , which this function (and all its internal calls)
 }
 \author{
 Will Pearse
