@@ -50,7 +50,7 @@ cartoon.plot <- function(tree, tip.groups=vector("list", 0), clade.col=NULL, br.
     to.be.joined <- to.be.joined | tree$edge[,1] %in% unlist(nodes)
     if(is.null(br.clade.col))
         plot(tree, edge.col=ifelse(to.be.joined, "white", "black"), ...) else plot(tree, plot=FALSE, ...)
-    pp <- get("last_plot.phylo", envir = as.name(".PlotPhyloEnv"))
+    pp <- get("last_plot.phylo", envir = .PlotPhyloEnv)
     for(i in seq_along(tip.groups))
         polygon(pp$xx[c(tip.groups[[i]],nodes[[i]],tip.groups[[i]])], pp$yy[c(tip.groups[[i]],nodes[[i]],tip.groups[[i]])], col=clade.col[i], border=clade.col[i])
     if(!is.null(br.clade.col)){
