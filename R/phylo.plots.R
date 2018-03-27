@@ -77,7 +77,7 @@ cartoon.plot <- function(tree, tip.groups=vector("list", 0), clade.col=NULL, br.
 #' @importFrom plotrix arctext
 #' @export
 ringlabels <- function(tip.groups, text, radial.adj=1.05, ...){
-    lastPP <- get("last_plot.phylo", envir = as.name(".PlotPhyloEnv"))
+    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
     raw <- seq(0, 2 * pi * (1 - 1/lastPP$Ntip) - 2 * pi * 1/360, length.out=lastPP$Ntip)
     edges <- lastPP$edge[,2]
     edges <- order(edges[edges <= lastPP$Ntip])
@@ -106,7 +106,7 @@ ringlabels <- function(tip.groups, text, radial.adj=1.05, ...){
 #' }
 #' @export
 tipring <- function(tips, col, radial.adj=1, ...){
-    lastPP <- get("last_plot.phylo", envir = as.name(".PlotPhyloEnv"))
+    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
     if (missing(tips)) 
         tips <- seq(lastPP$Ntip)
     edges <- lastPP$edge[,2]
@@ -160,7 +160,7 @@ tipring <- function(tips, col, radial.adj=1, ...){
 #' @export
 willeerd.tiplabels <- function (text, tip, adj = c(0.5, 0.5), radial.adj=1, frame = "rect", pch = NULL, thermo = NULL, pie = NULL, piecol = NULL, col = "black", bg = "yellow", horiz = FALSE, width = NULL, height = NULL, ...) 
 {
-    lastPP <- get("last_plot.phylo", envir = as.name(".PlotPhyloEnv"))
+    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
     if (missing(tip)) 
         tip <- 1:lastPP$Ntip
     lastPP$xx <- lastPP$xx * radial.adj
@@ -205,7 +205,7 @@ willeerd.tiplabels <- function (text, tip, adj = c(0.5, 0.5), radial.adj=1, fram
 #' @export
 willeerd.nodelabels <- function (text, node, radial.adj=1, adj = c(0.5, 0.5), frame = "rect", pch = NULL, thermo = NULL, pie = NULL, piecol = NULL, col = "black", bg = "lightblue", horiz = FALSE, width = NULL, height = NULL, ...) 
 {
-    lastPP <- get("last_plot.phylo", envir = as.name(".PlotPhyloEnv"))
+    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
     if (missing(node)) 
         node <- (lastPP$Ntip + 1):length(lastPP$xx)
     lastPP$xx <- lastPP$xx * radial.adj
@@ -667,7 +667,7 @@ willeerd.plot.phylo <- function (x, type = "phylogram", use.edge.length = TRUE, 
         x.lim = x.lim, y.lim = y.lim, direction = direction, 
         tip.color = tip.color, Ntip = Ntip, Nnode = Nnode)
     assign("last_plot.phylo", c(L, list(edge = xe, xx = xx, yy = yy)), 
-        envir = as.name(".PlotPhyloEnv"))
+        envir = .PlotPhyloEnv)
     invisible(L)
 }
 
